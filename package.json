@@ -1,0 +1,27 @@
+{
+  "name": "fabric-node-rest",
+  "version": "0.1.0",
+  "description": "A Rest server to demonstrate using node.js SDK APIs",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "keywords": [
+    "fabric-client"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "cookie-parser": "^1.4.3",
+    "cors": "^2.8.3",
+    "express": "^4.16.2",
+    "express-bearer-token": "^2.1.0",
+    "express-jwt": "^5.1.0",
+    "express-session": "^1.15.2",
+    "fabric-ca-client": "^1.0.2",
+    "fabric-client": "^1.0.2",
+    "fs-extra": "^2.0.0",
+    "jsonwebtoken": "^7.3.0",
+    "log4js": "^0.6.38"
+  }
+}

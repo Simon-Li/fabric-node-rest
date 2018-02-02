@@ -1,0 +1,100 @@
+{
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "allowImportExportEverywhere": true
+    },
+    "extends": [
+      "airbnb-base"
+    ],
+      "plugins": [
+          "react"
+      ],
+    "env": {
+      "meteor": true,
+      "browser": true
+    },
+    "globals": {
+      "Modal": true,
+      "TAPi18n": true,
+      "uuid": true,
+      "swal": true,
+      "AutoForm": true,
+      "SimpleSchema": true,
+      "jQuery": true
+    },
+    "rules": {
+      "max-len": [
+        "error",
+        300,
+        2,
+        {
+          "ignoreUrls": true,
+          "ignoreComments": false,
+          "ignoreRegExpLiterals": true,
+          "ignoreStrings": true,
+          "ignoreTemplateLiterals": true
+        }
+      ],
+      "no-underscore-dangle": "off",
+      "import/no-extraneous-dependencies": "off",
+      "comma-dangle": 0,
+      "import/no-absolute-path": "off",
+      "import/no-unresolved": [
+        "off"
+      ],
+      "import/extensions": "off",
+      "spaced-comment": "off",
+      "import/first": "off",
+      "padded-blocks": "off",
+      "brace-style": [
+        "error",
+        "stroustrup"
+      ],
+      "require-jsdoc": [
+        "error",
+        {
+          "require": {
+            "FunctionDeclaration": true,
+            "MethodDefinition": false,
+            "ClassDeclaration": false,
+            "ArrowFunctionExpression": true
+          }
+        }
+      ],
+      "class-methods-use-this": "off",
+      "valid-jsdoc": "error",
+      "quotes": [
+        "error",
+        "single"
+      ],
+      "space-before-blocks": "off",
+      "no-restricted-syntax": [
+        "error",
+        "LabeledStatement",
+        "WithStatement"
+      ],
+      "indent": [
+        "error",
+        4
+      ],
+      "func-names": "error",
+      "no-plusplus": [
+        "error",
+        {
+          "allowForLoopAfterthoughts": true
+        }
+      ],
+      "no-param-reassign": [
+        "error",
+        {
+          "props": false
+        }
+      ],
+      "no-console": "error",
+      "no-continue": "off",
+      "no-bitwise": "off",
+      "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+      "react/jsx-uses-vars": 2
+    }
+  }
+  
