@@ -19,9 +19,10 @@ var path = require('path');
 var config = require('../config.json');
 var helper = require('./helper.js');
 var logger = helper.getLogger('Create-Channel');
+
 //Attempt to send a request to the orderer with the sendCreateChain method
 var createChannel = function(channelName, channelConfigPath, username, orgName) {
-	logger.debug('\n====== Creating Channel \'' + channelName + '\' ======\n');
+	logger.debug(`\n====== Creating Channel '${channelName}', '${orgName}' ======\n`);
 	var client = helper.getClientForOrg(orgName);
 	var channel = helper.getChannelForOrg(orgName);
 

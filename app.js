@@ -49,12 +49,15 @@ const port = process.env.PORT || hfc.getConfigSetting('port');
 ///////////////////////////////////////////////////////////////////////////////
 app.options('*', cors());
 app.use(cors());
+
 //support parsing of application/json type post data
 app.use(bodyParser.json());
+
 //support parsing of application/x-www-form-urlencoded post data
 app.use(bodyParser.urlencoded({
     extended: false
 }));
+
 // set secret const
 app.set('secret', 'thisismysecret');
 app.use(expressJWT({
@@ -88,7 +91,7 @@ app.use((req, res, next) => {
         return next();
     });
 
-    return next();
+    //return next();
 });
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -112,8 +115,20 @@ function getErrorMessage(field) {
     return response;
 }
 
+/**
+ * async middleware wrapper
+ * @param {object} fn Function to be wrapped in a promise
+ * @returns {object} middleware handler
+ */
+function asyncMiddleware(fn) {
+    return function middlewareFn(req, res, next) {
+        Promise.resolve(fn(req, res, next))
+            .catch(next);
+    };
+}
+
 ///////////////////////////////////////////////////////////////////////////////
-///////////////////////// REST ENDPOINTS START HERE ///////////////////////////
+// REST ENDPOINTS START HERE
 ///////////////////////////////////////////////////////////////////////////////
 
 // Register and enroll user

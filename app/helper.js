@@ -28,13 +28,14 @@ var copService = require('fabric-ca-client');
 var hfc = require('fabric-client');
 hfc.setLogger(logger);
 var ORGS = hfc.getConfigSetting('network-config');
+logger.info('ORGS:', ORGS);
 
 var clients = {};
 var channels = {};
 var caClients = {};
 
 // set up the client and channel objects for each org
-for (let key in ORGS) {
+for (const key in ORGS) {
 	if (key.indexOf('org') === 0) {
 		let client = new hfc();
 

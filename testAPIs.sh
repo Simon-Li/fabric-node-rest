@@ -43,8 +43,8 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"channelName":"mychannel",
-	"channelConfigPath":"../artifacts/channel/mychannel.tx"
+	"channelName":"test-network",
+	"channelConfigPath":"../fixtures/channel/channel.tx"
 }'
 echo
 echo
@@ -56,7 +56,7 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"peers": ["peer1","peer2"]
+	"peers": ["peer1"]
 }'
 echo
 echo
