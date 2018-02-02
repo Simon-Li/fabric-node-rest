@@ -65,6 +65,8 @@ var joinChannel = function(channelName, peers, username, org) {
 
 		return channel.getGenesisBlock(request);
 	}).then((genesis_block) => {
+		logger.info('Successfully got the genesis block');
+
 		tx_id = client.newTransactionID();
 		var request = {
 			targets: helper.newPeers(peers, org),

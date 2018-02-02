@@ -175,7 +175,7 @@ app.post('/channels', (req, res) => {
     const channelName = req.body.channelName;
     const channelConfigPath = req.body.channelConfigPath;
     logger.debug(`Channel name : ${channelName}`);
-    logger.debug(`channelConfigPath : ${channelConfigPath}`); //../artifacts/channel/mychannel.tx
+    logger.debug(`channelConfigPath : ${channelConfigPath}`); // "../fixtures/channel/channel.tx"
     if (!channelName) {
         res.json(getErrorMessage('\'channelName\''));
         return;

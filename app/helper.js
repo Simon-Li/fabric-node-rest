@@ -43,7 +43,9 @@ for (const key in ORGS) {
 		cryptoSuite.setCryptoKeyStore(hfc.newCryptoKeyStore({path: getKeyStoreForOrg(ORGS[key].name)}));
 		client.setCryptoSuite(cryptoSuite);
 
-		let channel = client.newChannel(hfc.getConfigSetting('channelName'));
+		const channelName = hfc.getConfigSetting('channelName');
+		logger.info(`<<<<<<<<--- C L I E N T - C H A N N E L name: ${channelName} --->>>>>>>>>`);
+		let channel = client.newChannel(channelName);
 		channel.addOrderer(newOrderer(client));
 
 		clients[key] = client;
