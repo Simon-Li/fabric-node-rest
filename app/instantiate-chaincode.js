@@ -27,8 +27,7 @@ var tx_id = null;
 var eh = null;
 
 var instantiateChaincode = function(channelName, chaincodeName, chaincodeVersion, functionName, args, username, org) {
-	logger.debug('\n============ Instantiate chaincode on organization ' + org +
-		' ============\n');
+	logger.debug('\n============ Instantiate chaincode on organization ' + org + ' ============\n');
 
 	var channel = helper.getChannelForOrg(org);
 	var client = helper.getClientForOrg(org);
@@ -45,6 +44,7 @@ var instantiateChaincode = function(channelName, chaincodeName, chaincodeVersion
 		tx_id = client.newTransactionID();
 		// send proposal to endorser
 		var request = {
+			//chaincodePath: chaincode_path,
 			chaincodeId: chaincodeName,
 			chaincodeVersion: chaincodeVersion,
 			args: args,
@@ -54,6 +54,7 @@ var instantiateChaincode = function(channelName, chaincodeName, chaincodeVersion
 		if (functionName)
 			request.fcn = functionName;
 
+		logger.info('instantiate proposal request:', request);
 		return channel.sendInstantiateProposal(request);
 	}, (err) => {
 		logger.error('Failed to initialize the channel');

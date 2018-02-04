@@ -3,7 +3,7 @@
    "port":"4000",
    "jwt_expiretime": "36000",
    "channelName":"test-network",
-   "CC_SRC_PATH":"../artifacts",
+   "CC_SRC_PATH":"../fixtures",
    "keyValueStore":"/tmp/fabric-client-kvs",
    "eventWaitTime":"30000",
    "admins":[

@@ -103,13 +103,12 @@ curl -s -X POST \
   -H "content-type: application/json" \
   -d '{
 	"peers": ["peer1"],
-	"chaincodeName":"mycc",
-	"chaincodePath":"github.com/example_cc",
+	"chaincodeName":"demo_cc",
+	"chaincodePath":"github.com/demo_cc",
 	"chaincodeVersion":"v0"
 }'
 echo
 echo
-
 
 echo "POST Install chaincode on Org2"
 echo
@@ -119,8 +118,23 @@ curl -s -X POST \
   -H "content-type: application/json" \
   -d '{
 	"peers": ["peer1"],
-	"chaincodeName":"mycc",
-	"chaincodePath":"github.com/example_cc",
+	"chaincodeName":"demo_cc",
+	"chaincodePath":"github.com/demo_cc",
+	"chaincodeVersion":"v0"
+}'
+echo
+echo
+
+echo "POST Install chaincode on Org3"
+echo
+curl -s -X POST \
+  http://localhost:4000/chaincodes \
+  -H "authorization: Bearer $ORG3_TOKEN" \
+  -H "content-type: application/json" \
+  -d '{
+	"peers": ["peer1"],
+	"chaincodeName":"demo_cc",
+	"chaincodePath":"github.com/demo_cc",
 	"chaincodeVersion":"v0"
 }'
 echo
@@ -133,9 +147,11 @@ curl -s -X POST \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"chaincodeName":"mycc",
-	"chaincodeVersion":"v0",
-	"args":["a","100","b","200"]
+  "chaincodePath":"github.com/demo_cc",
+  "chaincodeName":"demo_cc",
+  "chaincodeVersion":"v0",
+  "fcn":"Init",
+  "args":"{\"ObjectType\":\"loanForm\", \"Name\":\"AIPU\", \"OwnerName\":\"simon\"}"
 }'
 echo
 echo
@@ -143,12 +159,12 @@ echo
 echo "POST invoke chaincode on peers of Org1 and Org2"
 echo
 TRX_ID=$(curl -s -X POST \
-  http://localhost:4000/channels/mychannel/test-network/mycc \
+  http://localhost:4000/channels/test-network/chaincodes/demo_cc \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json" \
   -d '{
-	"fcn":"move",
-	"args":["a","b","10"]
+	"fcn":"createLoanForm",
+	"args":"{\"ObjectType\": \"loanForm\", \"Name\": \"HuiHanAgent5\", \"OwnerName\": \"HhUser002\"}"
 }')
 echo "Transacton ID is $TRX_ID"
 echo
@@ -156,25 +172,29 @@ echo
 
 echo "GET query chaincode on peer1 of Org1"
 echo
-curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/chaincodes/mycc?peer=peer1&fcn=query&args=%5B%22a%22%5D" \
+curl -G -s -X GET \
+  "http://localhost:4000/channels/test-network/chaincodes/demo_cc" \
   -H "authorization: Bearer $ORG1_TOKEN" \
-  -H "content-type: application/json"
+  -H "content-type: application/json" \
+  --data-urlencode "peer=peer1" \
+  --data-urlencode "fcn=queryLoanForms" \
+  --data-urlencode "args={\"selector\": { \"objectType\": \"loanForm\" }}"
 echo
 echo
 
 echo "GET query Block by blockNumber"
 echo
-curl -s -X GET \
-  "http://localhost:4000/channels/mychannel/blocks/1?peer=peer1" \
+curl -G -s -X GET \
+  "http://localhost:4000/channels/test-network/blocks/1" \
   -H "authorization: Bearer $ORG1_TOKEN" \
-  -H "content-type: application/json"
+  -H "content-type: application/json" \
+  --data-urlencode "peer=peer1"
 echo
 echo
 
 echo "GET query Transaction by TransactionID"
 echo
-curl -s -X GET http://localhost:4000/channels/mychannel/transactions/$TRX_ID?peer=peer1 \
+curl -s -X GET http://localhost:4000/channels/test-network/transactions/$TRX_ID?peer=peer1 \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo
@@ -198,7 +218,7 @@ echo
 echo "GET query ChainInfo"
 echo
 curl -s -X GET \
-  "http://localhost:4000/channels/mychannel?peer=peer1" \
+  "http://localhost:4000/channels/test-network?peer=peer1" \
   -H "authorization: Bearer $ORG1_TOKEN" \
   -H "content-type: application/json"
 echo

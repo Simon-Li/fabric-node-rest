@@ -105,11 +105,11 @@ var invokeChaincode = function(peerNames, channelName, chaincodeName, fcn, args,
 
 						if (code !== 'VALID') {
 							logger.error(
-								'The balance transfer transaction was invalid, code = ' + code);
+								'The I N V O K E transaction was invalid, code = ' + code);
 							reject();
 						} else {
 							logger.info(
-								'The balance transfer transaction has been committed on peer ' +
+								'The I N V O K E transaction has been committed on peer ' +
 								eh._ep._endpoint.addr);
 							resolve();
 						}

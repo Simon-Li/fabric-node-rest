@@ -282,7 +282,11 @@ app.post('/channels/:channelName/chaincodes', (req, res) => {
         res.json(getErrorMessage('\'args\''));
         return;
     }
-    instantiate.instantiateChaincode(channelName, chaincodeName, chaincodeVersion, fcn, args, req.username, req.orgname)
+
+    const arrayStringArgs = [];
+    arrayStringArgs.push(args); // make up an array for api call
+
+    instantiate.instantiateChaincode(channelName, chaincodeName, chaincodeVersion, fcn, arrayStringArgs, req.username, req.orgname)
     .then((message) => {
         res.send(message);
     });
@@ -319,11 +323,15 @@ app.post('/channels/:channelName/chaincodes/:chaincodeName', (req, res) => {
         return;
     }
 
-    invoke.invokeChaincode(peers, channelName, chaincodeName, fcn, args, req.username, req.orgname)
+    const arrayStringArgs = [];
+    arrayStringArgs.push(args); // make up an array for api call
+
+    invoke.invokeChaincode(peers, channelName, chaincodeName, fcn, arrayStringArgs, req.username, req.orgname)
     .then((message) => {
         res.send(message);
     });
 });
+
 // Query on chaincode on target peers
 app.get('/channels/:channelName/chaincodes/:chaincodeName', (req, res) => {
     logger.debug('==================== QUERY BY CHAINCODE ==================');
@@ -356,10 +364,13 @@ app.get('/channels/:channelName/chaincodes/:chaincodeName', (req, res) => {
         return;
     }
     args = args.replace(/'/g, '"');
-    args = JSON.parse(args);
-    logger.debug(args);
+    //args = JSON.parse(args);
+    const arrayStringArgs = [];
+    arrayStringArgs.push(args); // make up an array for api call
 
-    query.queryChaincode(peer, channelName, chaincodeName, args, fcn, req.username, req.orgname)
+    logger.debug(arrayStringArgs);
+
+    query.queryChaincode(peer, channelName, chaincodeName, arrayStringArgs, fcn, req.username, req.orgname)
     .then((message) => {
         res.send(message);
     });
