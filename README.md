@@ -10,7 +10,7 @@ The server should be run by each member organization, it manages user authentica
 
 ## Setup
 
-1. Fork the repo
+1. `git clone git@github.com:Simon-Li/fabric-node-rest.git`
 2. `cd fabric-node-rest`
 3. `./runApp.sh`
 4. `./testAPIs.sh` (when the server is running)
