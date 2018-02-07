@@ -1,37 +1,37 @@
 /**
  * Created by maksim on 7/18/17.
+ * Updated by Simon Li on 2/6/18.
  */
+
 "use strict";
+
 var log4js = require('log4js');
 var logger = log4js.getLogger('Socket');
-var peerListener = require('../lib-fabric/peer-listener.js');
-var tools = require('../lib/tools');
+var peerListener = require('./peer-listener.js');
+var tools = require('./tools');
 
-var hfc = require('../lib-fabric/hfc');
+var hfc = require('fabric-client');
+hfc.setLogger(logger);
 var networkConfig = hfc.getConfigSetting('network-config');
 
 // config
 var config = require('../config.json');
-const USERNAME = config.user.username;
-
-module.exports = {
-  init: init
-};
+const USERNAME = config.admins[0].username;
 
 /**
  * @param {Server} io
  * @param {object} options
  */
-function init(io, options){
+function init(io, options) {
   var ORG = options.org;
 
   var orgConfig = networkConfig[ORG];
-  if(!orgConfig){
+  if (!orgConfig) {
     throw new Error('No such organisation in config: '+ORG);
   }
 
-  var PEERS = Object.keys(orgConfig).filter(k=>k.startsWith('peer'));
-  var peersAddress = PEERS.map(p=>tools.getHost(networkConfig[ORG][p].requests));
+  var PEERS = Object.keys(orgConfig).filter(k => k.startsWith('peer'));
+  var peersAddress = PEERS.map(p => tools.getHost(networkConfig[ORG][p].requests));
 
   // log connections
   io.on('connection', function(socket){
@@ -44,7 +44,7 @@ function init(io, options){
   // emit block appearance
   var lastBlock = null;
   //TODO: listen all peers, remove duplicates
-  peerListener.init([peersAddress[0]], USERNAME, ORG);
+  peerListener.init([peersAddress[0]], ORG);
   peerListener.registerBlockEvent(function(block){
     // emit globally
     lastBlock = block;
@@ -70,3 +70,5 @@ function init(io, options){
   //   socket.emit('ping', Date.now() );
   // }, 5000);
 }
+
+exports.init = init;

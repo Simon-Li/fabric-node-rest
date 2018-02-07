@@ -74,4 +74,4 @@ restartNetwork
 
 installNodeModules
 
-PORT=4000 node app
+ORG=org1 PORT=4000 node app

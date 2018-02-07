@@ -59,12 +59,11 @@ var _wasConnectedAtStartup = false;
  * @param {string} org organisation ID
  * @returns {Promise.<TResult>}
  */
-function init(peersUrls, username, org){
+function init(peersUrls, org){
   peers = peersUrls;
-  _username = username;
   orgID = org;
 
-  initPromise = helper.getClientUser(username, org)
+  initPromise = helper.getClientUser(org)
     .then((user) => {
       // TODO: print organisation role from certificate?
       logger.debug(util.format('Authorized as %s@%s\n', user._name, orgID));

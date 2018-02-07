@@ -4,7 +4,7 @@
   "description": "A Rest server to demonstrate using node.js SDK APIs",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "ORG=org1 node app.js"
   },
   "keywords": [
     "fabric-client"
@@ -22,6 +22,7 @@
     "fabric-client": "^1.0.2",
     "fs-extra": "^2.0.0",
     "jsonwebtoken": "^7.3.0",
-    "log4js": "^0.6.38"
+    "log4js": "^0.6.38",
+    "socket.io": "^2.0.4"
   }
 }

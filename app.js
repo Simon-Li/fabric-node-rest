@@ -18,6 +18,7 @@ const log4js = require('log4js');
 
 const logger = log4js.getLogger('FabricNodeRest');
 const express = require('express');
+const SocketServer = require('socket.io');
 //const session = require('express-session');
 //const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -40,7 +41,9 @@ const install = require('./app/install-chaincode.js');
 const instantiate = require('./app/instantiate-chaincode.js');
 const invoke = require('./app/invoke-transaction.js');
 const query = require('./app/query.js');
+const socketApp = require('./app/socket-api-app.js');
 
+const ORG = process.env.ORG;
 const host = process.env.HOST || hfc.getConfigSetting('host');
 const port = process.env.PORT || hfc.getConfigSetting('port');
 
@@ -98,6 +101,11 @@ app.use((req, res, next) => {
 // START SERVER
 ///////////////////////////////////////////////////////////////////////////////
 const server = http.createServer(app).listen(port, () => {});
+
+const socketOptions = { origins: '*:*' };
+const io = new SocketServer(server, socketOptions);
+socketApp.init(io, { org: ORG });
+
 logger.info('****************** SERVER STARTED ************************');
 logger.info(`**************  http://' + ${host} + ':' + ${port} + '  ******************`);
 server.timeout = 240000;

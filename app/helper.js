@@ -58,6 +58,18 @@ for (const key in ORGS) {
 	}
 }
 
+/**
+ * @param {string} orgID
+ * @returns {Promise<User>}
+ */
+function getClientUser(orgID){
+	//-TBD ...
+	//const client = getClientForOrg(orgID);
+	logger.info(`>>>>>>>>>>>>>>> getClientUser from org: ${orgID}`);
+
+	return getOrgAdmin(orgID);
+}
+
 function setupPeers(channel, org, client) {
 	for (let key in ORGS[org].peers) {
 		let data = fs.readFileSync(path.join(__dirname, ORGS[org].peers[key]['tls_cacerts']));
@@ -320,3 +332,4 @@ exports.newPeers = newPeers;
 exports.newEventHubs = newEventHubs;
 exports.getRegisteredUsers = getRegisteredUsers;
 exports.getOrgAdmin = getOrgAdmin;
+exports.getClientUser = getClientUser;
