@@ -30,16 +30,10 @@ var index = 0;
  */
 var eventhub = null;
 
-
-/**
- * @type {string}
- */
-var _username = null;
 /**
  * @type {string} organisation ID (json key for organisation in  network-config)
  */
 var orgID = null;
-
 
 /**
  * @type {Promise}
@@ -59,7 +53,7 @@ var _wasConnectedAtStartup = false;
  * @param {string} org organisation ID
  * @returns {Promise.<TResult>}
  */
-function init(peersUrls, org){
+function init(peersUrls, org) {
   peers = peersUrls;
   orgID = org;
 
@@ -67,6 +61,7 @@ function init(peersUrls, org){
     .then((user) => {
       // TODO: print organisation role from certificate?
       logger.debug(util.format('Authorized as %s@%s\n', user._name, orgID));
+
       return user;
     });
   // TODO: add promise catcher
@@ -88,18 +83,17 @@ function rotatePeers(){
  * listen peer for new blocks
  * channelName?
  */
-function listen(){
+function listen() {
   return initPromise.then(function () {
 
     _connect();
 
-    //
     function _connect(){
       var peer = rotatePeers();
       logger.info('connecting to %s', peer);
 
       // set the transaction listener
-      return helper.newEventHub(peer, _username, orgID)
+      return helper.newEventHub(peer, orgID)
         .then(function(_eventhub){
           eventhub = _eventhub;
           eventhub._ep._request_timeout = 5000; // TODO: temp solution, move timeout to config
@@ -127,7 +121,6 @@ function listen(){
       }
     }
 
-    //
     function _onBlock(block){
       logger.debug(util.format('(((((((((((( Got block event )))))))))))'));
       logger.debug('Got block event', block.header.data_hash);

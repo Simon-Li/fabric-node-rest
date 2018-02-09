@@ -30,8 +30,8 @@ function init(io, options) {
     throw new Error('No such organisation in config: '+ORG);
   }
 
-  var PEERS = Object.keys(orgConfig).filter(k => k.startsWith('peer'));
-  var peersAddress = PEERS.map(p => tools.getHost(networkConfig[ORG][p].requests));
+  const peerNameKeys = Object.keys(orgConfig.peers).filter(k => k.startsWith('peer'));
+  const peersAddress = peerNameKeys.map(peerkey => tools.getHost(networkConfig[ORG]['peers'][peerkey].requests));
 
   // log connections
   io.on('connection', function(socket){
@@ -43,8 +43,9 @@ function init(io, options) {
 
   // emit block appearance
   var lastBlock = null;
+
   //TODO: listen all peers, remove duplicates
-  peerListener.init([peersAddress[0]], ORG);
+  peerListener.init(peersAddress, ORG);
   peerListener.registerBlockEvent(function(block){
     // emit globally
     lastBlock = block;

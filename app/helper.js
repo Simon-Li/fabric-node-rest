@@ -14,6 +14,7 @@
  *  limitations under the License.
  */
 'use strict';
+var _get = require('lodash/get');
 var log4js = require('log4js');
 var logger = log4js.getLogger('Helper');
 logger.setLevel('DEBUG');
@@ -24,11 +25,13 @@ var fs = require('fs-extra');
 var User = require('fabric-client/lib/User.js');
 var crypto = require('crypto');
 var copService = require('fabric-ca-client');
+var EventHub = require('fabric-client/lib/EventHub.js');
 
 var hfc = require('fabric-client');
 hfc.setLogger(logger);
 var ORGS = hfc.getConfigSetting('network-config');
-logger.info('ORGS:', ORGS);
+
+var config = require('../config.json');
 
 var clients = {};
 var channels = {};
@@ -59,13 +62,60 @@ for (const key in ORGS) {
 }
 
 /**
+ * @param {url} peerUrl
+ * @param {string} [orgID]
+ * @returns {object}
+ * @private
+ */
+function _getPeerInfoByUrl(peerUrl, orgID){
+	const peersInfo = _get(ORGS, `${orgID}.peers`, null);
+
+	for (const key in peersInfo) {
+		if (peersInfo[key].requests.includes(peerUrl)) {
+			return peersInfo[key];
+		}
+	}
+
+	return null;
+  }
+
+/**
+ * @param {url} peerUrl
+ * @param {string} orgID
+ * @return {Promise<EventHub>}
+ */
+async function newEventHub(peerUrl, orgID) {
+
+	const client = await getClientForOrg(orgID);
+	
+	var peerInfo = _getPeerInfoByUrl(peerUrl, orgID);
+	if (!peerInfo) {
+		throw new Error('Failed to find a peer matching the url: ' + peerUrl);
+	}
+
+	try {
+		const eventHub = new EventHub(client);
+		const data = fs.readFileSync(path.join(__dirname, peerInfo['tls_cacerts']));
+
+		eventHub.setPeerAddr(peerInfo['events'], {
+			pem: Buffer.from(data).toString(),
+			'ssl-target-name-override': peerInfo['server-hostname']
+		});
+		return eventHub;
+	}
+	catch (e) {
+		logger.error('newEventHub:', e);
+	}
+}
+
+/**
  * @param {string} orgID
  * @returns {Promise<User>}
  */
-function getClientUser(orgID){
-	//-TBD ...
-	//const client = getClientForOrg(orgID);
-	logger.info(`>>>>>>>>>>>>>>> getClientUser from org: ${orgID}`);
+function getClientUser(orgID) {
+
+	// -TBD, can return a client/user other than `admin`?
+	// const client = getClientForOrg(orgID);
 
 	return getOrgAdmin(orgID);
 }
@@ -333,3 +383,4 @@ exports.newEventHubs = newEventHubs;
 exports.getRegisteredUsers = getRegisteredUsers;
 exports.getOrgAdmin = getOrgAdmin;
 exports.getClientUser = getClientUser;
+exports.newEventHub = newEventHub;
