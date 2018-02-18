@@ -72,6 +72,21 @@ function installNodeModules() {
 
 restartNetwork
 
-installNodeModules
+#installNodeModules
 
-ORG=org1 PORT=4000 node app
+#echo ">>>>>>>>>>>> start fabric rest "
+#docker-compose -f ./docker-compose.yaml down
+
+#CONTAINER_IDS=$(docker ps -a | grep "fabric-node-rest" | awk '{print $1}')
+#echo
+#if [ -z "$CONTAINER_IDS" -o "$CONTAINER_IDS" = " " ]; then
+#	echo "========== No containers available to kill =========="
+#else
+#	docker kill $CONTAINER_IDS
+#	docker rm -f $CONTAINER_IDS
+#	docker rmi -f $DOCKER_IMAGE_IDS
+#fi
+
+#sleep 15
+#docker-compose -f ./docker-compose.yaml up -d
+#ORG=org1 PORT=4000 node app

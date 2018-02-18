@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+  fabric-api-svr:
+    container_name: fabric-api-svr
+    image: aipu/fabric-node-rest:latest
+    working_dir: /usr/src/app
+    ports:
+      - 4000:4000
+    environment:
+      - ORG=org1
+      - PORT=4000 
+    volumes:
+      - ./artifacts:/usr/src/app/artifacts
+    command: npm start
