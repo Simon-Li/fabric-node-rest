@@ -6,7 +6,7 @@
 #
 
 function dkkill() {
-	CONTAINER_IDS=$(docker ps | grep "dev\|peer[0-9]" | awk '{print $1}')
+	CONTAINER_IDS=$(docker ps | grep "dev\|peer[0-9]\|fabric-node-rest" | awk '{print $1}')
 	echo
         if [ -z "$CONTAINER_IDS" -o "$CONTAINER_IDS" = " " ]; then
                 echo "========== No containers available to kill =========="
@@ -17,7 +17,7 @@ function dkkill() {
 }
 
 function dkcl(){
-        CONTAINER_IDS=$(docker ps | grep "dev\|peer[0-9]" | awk '{print $1}')
+        CONTAINER_IDS=$(docker ps | grep "dev\|peer[0-9]\|fabric-node-rest" | awk '{print $1}')
 	echo
         if [ -z "$CONTAINER_IDS" -o "$CONTAINER_IDS" = " " ]; then
                 echo "========== No containers available for deletion =========="
@@ -28,7 +28,7 @@ function dkcl(){
 }
 
 function dkrm(){
-        DOCKER_IMAGE_IDS=$(docker images | grep "dev\|peer[0-9]" | awk '{print $3}')
+        DOCKER_IMAGE_IDS=$(docker images | grep "dev\|peer[0-9]\|fabric-node-rest" | awk '{print $3}')
 	echo
         if [ -z "$DOCKER_IMAGE_IDS" -o "$DOCKER_IMAGE_IDS" = " " ]; then
 		echo "========== No images available for deletion ==========="
@@ -74,19 +74,4 @@ restartNetwork
 
 #installNodeModules
 
-#echo ">>>>>>>>>>>> start fabric rest "
-#docker-compose -f ./docker-compose.yaml down
-
-#CONTAINER_IDS=$(docker ps -a | grep "fabric-node-rest" | awk '{print $1}')
-#echo
-#if [ -z "$CONTAINER_IDS" -o "$CONTAINER_IDS" = " " ]; then
-#	echo "========== No containers available to kill =========="
-#else
-#	docker kill $CONTAINER_IDS
-#	docker rm -f $CONTAINER_IDS
-#	docker rmi -f $DOCKER_IMAGE_IDS
-#fi
-
-#sleep 15
-#docker-compose -f ./docker-compose.yaml up -d
 #ORG=org1 PORT=4000 node app
