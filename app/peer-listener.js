@@ -96,7 +96,7 @@ function listen() {
       return helper.newEventHub(peer, orgID)
         .then(function(_eventhub){
           eventhub = _eventhub;
-          eventhub._ep._request_timeout = 5000; // TODO: temp solution, move timeout to config
+          eventhub._ep._request_timeout = 15000; // TODO: temp solution, move timeout to config
           eventhub._myListenerId = eventhub.registerBlockEvent(_onBlock, _onBlockError);
 
           eventhub.connect();
@@ -140,11 +140,11 @@ function listen() {
       }
 
       if(!eventhub._connected && !_wasConnectedAtStartup){
-        throw e;
+        throw new Error('onBlockError', e);
       }
 
       logger.trace('Set reconnection timer');
-      setTimeout( _connect, 5000); // TODO: socket reconnect interval
+      setTimeout( _connect, 15000); // TODO: socket reconnect interval
     }
 
   });

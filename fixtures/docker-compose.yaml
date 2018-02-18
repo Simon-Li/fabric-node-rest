@@ -206,3 +206,13 @@ services:
       - 5984:5984
     environment:
       DB_URL: http://localhost:5984/member_db
+
+  fabric-api-svr:
+    container_name: fabric-api-svr
+    image: aipu/fabric-node-rest:latest
+    #working_dir: /usr/src/app
+    ports:
+      - 4000:4000
+    command: npm start
+    depends_on:
+      - peer0.org1.example.com

@@ -14,3 +14,13 @@ The server should be run by each member organization, it manages user authentica
 2. `cd fabric-node-rest`
 3. `./runApp.sh`
 4. `./testAPIs.sh` (when the server is running)
+
+## Build
+
+1. `docker build -t aipu/fabric-node-rest:latest .`
+2. `docker push aipu/fabric-node-rest`
+
+## Util commands
+
+1. `docker run -p 4000:4000 --name fabric-rest  --rm aipu/fabric-node-rest:latest`
+2. `docker inspect peer0.org1.example.com|grep IPAddress`
