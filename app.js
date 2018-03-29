@@ -447,6 +447,7 @@ app.get('/channels/:channelName', (req, res) => {
     logger.debug(`channelName : ${req.params.channelName}`);
 
     const peer = req.query.peer;
+    logger.debug(`peer : ${peer}`);
 
     query.getChainInfo(peer, req.username, req.orgname).then(
         (message) => {
